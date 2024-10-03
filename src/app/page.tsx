@@ -1,8 +1,12 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { AuthScreen } from "@/features/auth/components/auth-screen";
+import { SignInFlow } from "@/features/auth/types";
+import { useState } from "react";
 
 export default function Home() {
-  return <div className="text-rose-500">Hello world
-  <Button variant={"default"}> Click me</Button>
-  </div>;
+
+  return (
+    <div>
+      <AuthScreen />
+    </div>
+  );
 }
