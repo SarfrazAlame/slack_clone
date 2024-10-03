@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { SignInFlow } from "../types";
@@ -18,6 +19,10 @@ interface SignUpCardProps {
 }
 
 const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
+
   return (
     <Card className="w-full h-full p-8">
       <CardHeader>
@@ -30,24 +35,30 @@ const SignUpCard = ({ setState }: SignUpCardProps) => {
         <form className="space-y-2.5">
           <Input
             disabled={false}
-            value=""
-            onChange={() => {}}
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
             placeholder="Email"
             type="email"
             required
           />
           <Input
             disabled={false}
-            value=""
-            onChange={() => {}}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
             placeholder="Password"
             type="Password"
             required
           />
-            <Input
+          <Input
             disabled={false}
-            value=""
-            onChange={() => {}}
+            value={ConfirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+            }}
             placeholder="Confirm Password"
             type="Password"
             required
