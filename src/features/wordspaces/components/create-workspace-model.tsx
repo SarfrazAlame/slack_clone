@@ -9,13 +9,36 @@ import {
 import { useCreateWorkspaceModel } from "../store/use-create-workspace-model";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useCreateWorkspace } from "../api/use-create-workspace";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const CreateWorkspaceModel = () => {
+  const router = useRouter();
   const [open, setOpen] = useCreateWorkspaceModel();
+  const [name, setName] = useState("");
+
+  const { mutate, isPending } = useCreateWorkspace();
 
   const handleClose = () => {
     setOpen(false);
-    // TODO: clear form
+    setName("");
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    mutate(
+      { name },
+      {
+        onSuccess: (id) => {
+          toast.success("Workspace created");
+          router.push(`/workspace/${id}`);
+          handleClose();
+        },
+      }
+    );
   };
 
   return (
@@ -24,9 +47,10 @@ export const CreateWorkspaceModel = () => {
         <DialogHeader>
           <DialogTitle>Add a workspace</DialogTitle>
         </DialogHeader>
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            value=""
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             disabled={false}
             required
             autoFocus
@@ -34,7 +58,7 @@ export const CreateWorkspaceModel = () => {
             placeholder="Workspace name e.g. 'Work', 'Personal', 'Home'"
           />
           <div className="flex justify-end">
-            <Button disabled={false}>
+            <Button type="submit" disabled={isPending}>
               Create
             </Button>
           </div>

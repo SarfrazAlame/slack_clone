@@ -21,7 +21,7 @@ export const create = mutation({
             joinCode,
         })
 
-        return workspaceId
+        return workspaceId  
     }
 })
 
@@ -31,3 +31,4 @@ export const get = query({
         return await ctx.db.query("workspaces").collect()
     }
 })
+
