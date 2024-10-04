@@ -3,10 +3,5 @@ import { SignInFlow } from "@/features/auth/types";
 import { useState } from "react";
 
 export default function Home() {
-
-  return (
-    <div className="h-full">
-      <AuthScreen />
-    </div>
-  );
+  return <div className="h-full">Helllo world</div>;
 }
