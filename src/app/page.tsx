@@ -1,16 +1,12 @@
-'use client'
-import { AuthScreen } from "@/features/auth/components/auth-screen";
-import { SignInFlow } from "@/features/auth/types";
-import { useState } from "react";
+"use client";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { Button } from "@/components/ui/button";
+import UserButton from "@/features/auth/components/user-button";
 
 export default function Home() {
-  const { signOut } = useAuthActions();
   return (
     <div className="h-full">
       Helllo world
-      <Button onClick={signOut}>Sign out</Button>
+      <UserButton />
     </div>
   );
 }
