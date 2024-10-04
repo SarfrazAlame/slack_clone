@@ -15,6 +15,7 @@ import { FcGoogle } from "react-icons/fc";
 import { SignInFlow } from "../types";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { TriangleAlert } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface SignInCardProps {
   setState: (state: SignInFlow) => void;
@@ -22,6 +23,7 @@ interface SignInCardProps {
 
 const SignInCard = ({ setState }: SignInCardProps) => {
   const { signIn } = useAuthActions();
+  const router = useRouter()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,6 +44,7 @@ const SignInCard = ({ setState }: SignInCardProps) => {
       })
       .finally(() => {
         setPending(false);
+        router.push("/")
       });
   };
 
