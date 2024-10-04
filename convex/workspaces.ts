@@ -21,7 +21,7 @@ export const create = mutation({
             joinCode,
         })
 
-        return workspaceId  
+        return workspaceId
     }
 })
 
@@ -32,3 +32,16 @@ export const get = query({
     }
 })
 
+
+export const getById = query({
+    args: { id: v.id('workspaces') },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx)
+
+        if (!userId) {
+            throw new Error("Unauthenticated")
+        }
+
+        return await ctx.db.get(args.id)
+    }
+})
