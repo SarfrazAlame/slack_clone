@@ -2,11 +2,10 @@
 
 import { useGetWorkspace } from "@/features/wordspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
-import { useParams } from "next/navigation";
 
 const WorkspaceIdPage = () => {
   const workspaceId = useWorkspaceId();
-  const { data, isLoading } = useGetWorkspace({ id: workspaceId });
+  const { data } = useGetWorkspace({ id: workspaceId });
 
   return <div> 
     Data: {JSON.stringify(data)}
