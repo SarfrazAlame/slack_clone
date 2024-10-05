@@ -1,9 +1,43 @@
-import React from 'react'
+import { useCurrentMembers } from "@/features/members/api/use-current-members";
+import { useGetWorkspace } from "@/features/wordspaces/api/use-get-workspace";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { AlertTriangle, Loader } from "lucide-react";
+import React from "react";
+import WorkspaceHeader from "./WorkspaceHeader";
 
 const WorkspaceSidebar = () => {
-  return (
-    <div>WorkspaceSidebar</div>
-  )
-}
+  const workspaceId = useWorkspaceId();
 
-export default WorkspaceSidebar
+  const { data: member, isLoading: memberIsLoading } = useCurrentMembers({
+    workspaceId,
+  });
+  const { data: wordspace, isLoading: workspaceLoading } = useGetWorkspace({
+    id: workspaceId,
+  });
+
+
+  if (workspaceLoading || memberIsLoading) {
+    return (
+      <div className="flex flex-col bg-[#5E2C5F] h-full items-center justify-center">
+        <Loader className="size-5 animate-spin text-white" />
+      </div>
+    );
+  }
+
+  if (!wordspace || !member) {
+    return (
+      <div className="flex flex-col gap-y-2 bg-[#5E2C5F] h-full items-center justify-center">
+        <AlertTriangle className="size-5 text-white" />
+        <p className="text-white text-sm">Workspace not found</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col bg-[#5E2C5F] h-full">
+      <WorkspaceHeader workspace={wordspace} isAdmin={member.role === "admin"}/>
+    </div>
+  );
+};
+
+export default WorkspaceSidebar;
