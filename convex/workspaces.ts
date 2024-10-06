@@ -11,7 +11,7 @@ const generateCode = () => {
     ).join("")
 
     return code
-} 
+}
 
 export const create = mutation({
     args: {
@@ -24,7 +24,7 @@ export const create = mutation({
             throw new Error("Uauthenticated")
         }
 
-        const joinCode =  generateCode()
+        const joinCode = generateCode()
 
         const workspaceId = await ctx.db.insert('workspaces', {
             name: args.name,
@@ -87,5 +87,31 @@ export const getById = query({
         }
 
         return await ctx.db.get(args.id)
+    }
+})
+
+export const update = mutation({
+    args: {
+        id: v.id("workspaces"),
+        name: v.string()
+    },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx)
+
+        if (!userId) {
+            throw new Error("Unauthenticated")
+        }
+
+        const member = await ctx.db.query("members")
+            .withIndex('by_worksapce_id_user_id', (q) => q.eq('workspaceId', args.id).eq('userId', userId))
+            .unique()
+
+        if (!member || member.role !== 'admin') {
+            throw new Error("Unauthorized")
+        }
+
+        await ctx.db.patch(args.id, { name: args.name })
+
+        return args.id
     }
 })
