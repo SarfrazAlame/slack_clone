@@ -1,13 +1,22 @@
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useRemoveWorkspace } from "@/features/wordspaces/api/use-remove-workspace";
 import { useUpdateWorkspace } from "@/features/wordspaces/api/use-update-workspace";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { TrashIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface PreferencesmodelProps {
   open: boolean;
@@ -20,6 +29,9 @@ export const PreferenceModel = ({
   setOpen,
   initailValue,
 }: PreferencesmodelProps) => {
+  const workspaceId = useWorkspaceId();
+  const router = useRouter()
+
   const [value, setValue] = useState(initailValue);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -29,6 +41,39 @@ export const PreferenceModel = ({
   const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
     useRemoveWorkspace();
 
+  const handlerRemove = () => {
+    removeWorkspace(
+      { id: workspaceId },
+      {
+        onSuccess: () => {
+          toast.success("Workspace removed");
+          router.push("/workspaces");
+        },
+        onError: () => {
+          toast.error("Failed to remove workspace");
+        },
+      }
+    );
+  };
+
+  const handlerEdit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    updateWorkspace(
+      { id: workspaceId, name: value },
+      {
+        onSuccess: () => {
+          toast.success("Workspace updated");
+          setEditOpen(false);
+        },
+        onError: () => {
+          toast.error("Failed to update workspace");
+        },
+      }
+    );
+    setEditOpen(false);
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="p-0 bg-gray-50 overflow-hidden">
@@ -36,18 +81,47 @@ export const PreferenceModel = ({
           <DialogTitle>{value}</DialogTitle>
         </DialogHeader>
         <div className="px-4 pb-4 flex flex-col gap-y-2">
-          <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
-            <div className="flex items-center justify-between">
-              <p className="text-sm font-semibold">workspace name</p>
-              <p className="text-sm text-[#1234a3] hover:underline font-semibold">
-                Edit
-              </p>
-            </div>
-          </div>
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogTrigger asChild>
+              <div className="px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold">workspace name</p>
+                  <p className="text-sm text-[#1234a3] hover:underline font-semibold">
+                    Edit
+                  </p>
+                </div>
+              </div>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Rename this workspace</DialogTitle>
+              </DialogHeader>
+              <form className="space-y-4" onSubmit={handlerEdit}>
+                <Input
+                  value={value}
+                  disabled={isUpdatingWorkspace}
+                  onChange={(e) => setValue(e.target.value)}
+                  required
+                  autoFocus
+                  minLength={3}
+                  maxLength={80}
+                  placeholder="Workspace name e.g 'Work', 'Personal', 'Home'"
+                />
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline" disabled={isUpdatingWorkspace}>
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button disabled={isUpdatingWorkspace}>Save</Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
 
           <button
             disabled={false}
-            onClick={() => {}}
+            onClick={handlerRemove}
             className="flex items-center gap-x-2 px-5 py-4 bg-white rounded-lg border cursor-pointer hover:bg-gray-50 text-rose-600"
           >
             <TrashIcon className="size-4" />
