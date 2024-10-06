@@ -4,6 +4,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useRemoveWorkspace } from "@/features/wordspaces/api/use-remove-workspace";
+import { useUpdateWorkspace } from "@/features/wordspaces/api/use-update-workspace";
 import { TrashIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -19,6 +21,14 @@ export const PreferenceModel = ({
   initailValue,
 }: PreferencesmodelProps) => {
   const [value, setValue] = useState(initailValue);
+  const [editOpen, setEditOpen] = useState(false);
+
+  const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } =
+    useUpdateWorkspace();
+
+  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
+    useRemoveWorkspace();
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="p-0 bg-gray-50 overflow-hidden">
