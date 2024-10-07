@@ -1,4 +1,3 @@
-import { useCurrentMembers } from "@/features/members/api/use-current-members";
 import { useGetWorkspace } from "@/features/wordspaces/api/use-get-workspace";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import {
@@ -17,6 +16,7 @@ import { useGetMembers } from "@/features/members/api/use-get-member";
 import { UserItem } from "./user-item";
 import { useCreateChannelModel } from "@/features/channels/store/use-create-channels-model";
 import { useChannelId } from "@/hooks/use-channel-id";
+import { useCurrentMember } from "@/features/members/api/use-current-members";
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
@@ -24,7 +24,7 @@ const WorkspaceSidebar = () => {
 
   const [_open, setOpen] = useCreateChannelModel();
 
-  const { data: member, isLoading: memberIsLoading } = useCurrentMembers({
+  const { data: member, isLoading: memberIsLoading } = useCurrentMember({
     workspaceId,
   });
   const { data: wordspace, isLoading: workspaceLoading } = useGetWorkspace({

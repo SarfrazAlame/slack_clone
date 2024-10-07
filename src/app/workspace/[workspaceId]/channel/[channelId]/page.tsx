@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const ChannelIdPage = () => {
-  return (
-    <div>
-        channel 
-    </div>
-  )
-}
+  return <div>channel</div>;
+};
 
-export default ChannelIdPage
+export default ChannelIdPage;
