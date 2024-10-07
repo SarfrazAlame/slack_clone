@@ -8,8 +8,12 @@ import { useCreateChannelModel } from "../store/use-create-channels-model";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
+import { useCreateChannel } from "../api/use-create-channel";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 export const CreateChannelModel = () => {
+  const workspaceId = useWorkspaceId();
+  const { mutate, isPending } = useCreateChannel();
   const [open, setOpen] = useCreateChannelModel();
 
   const [name, setName] = useState("");
@@ -24,16 +28,28 @@ export const CreateChannelModel = () => {
     setName(value);
   };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    mutate(
+      { name, workspaceId },
+      {
+        onSuccess: () => {
+          handleClose();
+        },
+      }
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add a channel</DialogTitle>
         </DialogHeader>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <Input
             value={name}
-            disabled={false}
+            disabled={isPending}
             onChange={handleChange}
             required
             autoFocus
@@ -42,7 +58,7 @@ export const CreateChannelModel = () => {
             placeholder="e.g. plan-budget"
           />
           <div className="flex justify-end">
-            <Button disabled={false}>Create</Button>
+            <Button disabled={isPending}>Create</Button>
           </div>
         </form>
       </DialogContent>
