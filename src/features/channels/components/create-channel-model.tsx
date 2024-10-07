@@ -10,8 +10,11 @@ import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { useCreateChannel } from "../api/use-create-channel";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useRouter } from "next/navigation";
 
 export const CreateChannelModel = () => {
+  const router = useRouter()
+
   const workspaceId = useWorkspaceId();
   const { mutate, isPending } = useCreateChannel();
   const [open, setOpen] = useCreateChannelModel();
@@ -33,7 +36,8 @@ export const CreateChannelModel = () => {
     mutate(
       { name, workspaceId },
       {
-        onSuccess: () => {
+        onSuccess: (id) => {
+          router.push(`/workspace/${workspaceId}/channel/${id}`);
           handleClose();
         },
       }
