@@ -61,9 +61,9 @@ export const get = query({
 })
 
 export const getById = query({
-    args:{id:v.id('channels')},
-    handler: async(ctx, args)=>{
-       const userId = await auth.getUserId(ctx)
+    args: { id: v.id('channels') },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx)
 
         if (!userId) {
             return null
@@ -76,10 +76,10 @@ export const getById = query({
         }
 
         const member = await ctx.db
-        .query('members')
-        .withIndex("by_worksapce_id_user_id", (q)=> q.eq('workspaceId', channel.workspaceId)
-        .eq('userId', userId))
-        .unique()
+            .query('members')
+            .withIndex("by_worksapce_id_user_id", (q) => q.eq('workspaceId', channel.workspaceId)
+                .eq('userId', userId))
+            .unique()
 
         if (!member) {
             return null
@@ -88,3 +88,61 @@ export const getById = query({
         return channel
     }
 })
+
+export const update = mutation({
+    args: { id: v.id('channels'), name: v.string() },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx)
+
+        if (!userId) {
+            throw new Error("Unauthenticated")
+        }
+
+        const channel = await ctx.db.get(args.id)
+
+        if (!channel) {
+            throw new Error("Channel not found")
+        }
+
+        const member = await ctx.db.query("members").withIndex("by_worksapce_id_user_id", (q) => q.eq('workspaceId', channel.workspaceId).eq('userId', userId)).unique()
+
+        if (!member || member.role !== 'admin') {
+            throw new Error("Unauthorized")
+        }
+
+        await ctx.db.patch(args.id, { name: args.name })
+
+        return args.id
+    }
+})
+
+
+export const remove = mutation({
+    args: { id: v.id('channels') },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx)
+
+        if (!userId) {
+            throw new Error("Unauthenticated")
+        }
+
+        const channel = await ctx.db.get(args.id)
+
+        if (!channel) {
+            throw new Error("Channel not found")
+        }
+
+        const member = await ctx.db.query("members").withIndex("by_worksapce_id_user_id", (q) => q.eq('workspaceId', channel.workspaceId).eq('userId', userId)).unique()
+
+        if (!member || member.role !== 'admin') {
+            throw new Error("Unauthorized")
+        }
+
+        // Remove associate messages
+
+        await ctx.db.delete(args.id)
+
+        return args.id
+    }
+})
+
