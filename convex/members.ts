@@ -37,7 +37,7 @@ export const get = query({
             }
         }
 
-        return member
+        return members
     }
 })
 

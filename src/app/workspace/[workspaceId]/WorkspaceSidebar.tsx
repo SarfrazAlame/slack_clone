@@ -14,6 +14,8 @@ import WorkspaceHeader from "./WorkspaceHeader";
 import { SidebarItem } from "./SidebarItem";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 import { WorkspaceSection } from "./WorkspaceSection";
+import { useGetMembers } from "@/features/members/api/use-get-member";
+import { UserItem } from "./user-item";
 
 const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
@@ -26,6 +28,10 @@ const WorkspaceSidebar = () => {
   });
 
   const { data: channels, isLoading: channelLoading } = useGetChannels({
+    workspaceId,
+  });
+
+  const { data: members, isLoading: memberLoading } = useGetMembers({
     workspaceId,
   });
 
@@ -66,6 +72,15 @@ const WorkspaceSidebar = () => {
           />
         ))}
       </WorkspaceSection>
+      {members?.map((item) => (
+        <UserItem
+          key={item.userId}
+          id={item.userId}
+          label={item.user.name}
+          image={item.user.image}
+          
+        />
+      ))}
     </div>
   );
 };
