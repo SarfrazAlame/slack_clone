@@ -1,14 +1,25 @@
 import dynamic from "next/dynamic";
-import React from "react";
+import Quill from "quill";
+import React, { useRef } from "react";
 
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
-const ChatInput = () => {
+interface ChatInputProps {
+  placeholder?: string;
+}
+
+const ChatInput = ({ placeholder }: ChatInputProps) => {
+  const editorRef = useRef<Quill | null>(null);
   return (
     <div className="px-5 w-full">
-      <Editor />
+      <Editor
+        placeholder={placeholder}
+        onSubmit={() => {}}
+        disabled={false}
+        innerRef={editorRef}
+      />
     </div>
-  );
+  );    
 };
 
 export default ChatInput;
