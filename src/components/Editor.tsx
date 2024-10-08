@@ -124,6 +124,16 @@ const Editor = ({
     };
   }, [innerRef]);
 
+  const toggleToolbar = () => {
+    setIsToolbarVisible((current) => !current);
+
+    const toolbarElement = containerRef.current?.querySelector(".ql-toolbar");
+
+    if (toolbarElement) {
+      toolbarElement.classList.toggle("hidden");
+    }
+  };
+
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
@@ -131,12 +141,14 @@ const Editor = ({
       <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm transition bg-white ">
         <div ref={containerRef} className="h-full ql-custom" />
         <div className="flex px-2 pb-2 z-[5]">
-          <Hint label="Hide formatting">
+          <Hint
+            label={isToolbarVisible ? "Show formatting" : "Hide formatting"}
+          >
             <Button
-              disabled={false}
+              disabled={disabled}
               size={"iconSm"}
               variant={"ghost"}
-              onClick={() => {}}
+              onClick={toggleToolbar}
             >
               <PiTextAa className="size-4" />
             </Button>
@@ -144,7 +156,7 @@ const Editor = ({
 
           <Hint label="Emoji">
             <Button
-              disabled={false}
+              disabled={disabled}
               size={"iconSm"}
               variant={"ghost"}
               onClick={() => {}}
@@ -155,7 +167,7 @@ const Editor = ({
           {variant === "create" && (
             <Hint label="Image">
               <Button
-                disabled={false}
+                disabled={disabled}
                 size={"iconSm"}
                 variant={"ghost"}
                 onClick={() => {}}
@@ -171,7 +183,7 @@ const Editor = ({
                 variant="outline"
                 size="sm"
                 onClick={() => {}}
-                disabled={false}
+                disabled={disabled}
               >
                 Cancer
               </Button>
@@ -179,7 +191,7 @@ const Editor = ({
                 className="ml-auto bg-[#007a5a] hover:bg-[#007a5a]/80 text-white"
                 size="sm"
                 onClick={() => {}}
-                disabled={false}
+                disabled={disabled || isEmpty}
               >
                 Save
               </Button>
@@ -203,11 +215,18 @@ const Editor = ({
           )}
         </div>
       </div>
-      <div className="p-2 text-[10px] text-muted-foreground flex justify-end">
-        <p>
-          <strong>Shift + Return</strong> to add a new line
-        </p>
-      </div>
+      {variant === "create" && (
+        <div
+          className={cn(
+            "p-2 text-[10px] text-muted-foreground flex justify-end",
+            !isEmpty && "opacity-100"
+          )}
+        >
+          <p>
+            <strong>Shift + Return</strong> to add a new line
+          </p>
+        </div>
+      )}
     </div>
   );
 };
