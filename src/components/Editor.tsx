@@ -15,6 +15,7 @@ import { ImageIcon, Smile } from "lucide-react";
 import Hint from "./Hint";
 import { Delta, Op } from "quill/core";
 import { cn } from "@/lib/utils";
+import { EmojiPopOver } from "./emoji-popover";
 
 interface EditorValue {
   image: File | null;
@@ -154,7 +155,7 @@ const Editor = ({
             </Button>
           </Hint>
 
-          <Hint label="Emoji">
+          <EmojiPopOver onEmojiSelect={() => {}}>
             <Button
               disabled={disabled}
               size={"iconSm"}
@@ -163,7 +164,7 @@ const Editor = ({
             >
               <Smile className="size-4" />
             </Button>
-          </Hint>
+          </EmojiPopOver>
           {variant === "create" && (
             <Hint label="Image">
               <Button
