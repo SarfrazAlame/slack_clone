@@ -135,6 +135,12 @@ const Editor = ({
     }
   };
 
+  const onEmojiSelect = (emoji: any) => {
+    const quill = quillRef.current;
+
+    quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
+  };
+
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   return (
@@ -155,16 +161,12 @@ const Editor = ({
             </Button>
           </Hint>
 
-          <EmojiPopOver onEmojiSelect={() => {}}>
-            <Button
-              disabled={disabled}
-              size={"iconSm"}
-              variant={"ghost"}
-              onClick={() => {}}
-            >
+          <EmojiPopOver onEmojiSelect={onEmojiSelect}>
+            <Button disabled={disabled} size={"iconSm"} variant={"ghost"}>
               <Smile className="size-4" />
             </Button>
           </EmojiPopOver>
+          
           {variant === "create" && (
             <Hint label="Image">
               <Button
