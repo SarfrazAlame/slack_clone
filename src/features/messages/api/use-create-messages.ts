@@ -9,7 +9,9 @@ type RequestType = {
     workspaceId: Id<'workspaces'>,
     channelId?: Id<"channels">,
     parentMessageId?: Id<"messages">
+    conversationId?: Id<"conversations">
 };
+
 type ResponceType = Id<"messages"> | null;
 
 type Options = {
@@ -18,6 +20,7 @@ type Options = {
     onSettled?: () => void;
     onthrowError?: boolean
 }
+
 
 export const useCreateMessage = () => {
 
