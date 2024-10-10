@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query, QueryCtx } from "./_generated/server";
 import { auth } from "./auth";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 import { paginationOptsValidator } from "convex/server";
 
 const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) => {
@@ -88,12 +88,60 @@ export const get = query({
                         const member = await populateMember(ctx, message.membserId)
                         const user = member ? await populateUser(ctx, member?.userId) : null
 
-                        if (!user || !member) {
+                        if (!member || !user) {
                             return null
                         }
-                    }
-                    )
+
+                        const reactions = await populateReactions(ctx, message._id)
+                        const thread = await populateThread(ctx, message._id)
+                        const image = message.image ? await ctx.storage.getUrl(message.image) : undefined
+
+                        const reactionWithCounts = reactions.map((reaction) => {
+                            return {
+                                ...reaction,
+                                count: reactions.filter((r) => r.value === reaction.value).length
+                            }
+                        });
+
+                        const dedupedReactions = reactionWithCounts.reduce((acc, reaction) => {
+                            const existingReaction = acc.find(
+                                (r) => r.value === reaction.value
+                            )
+
+                            if (existingReaction) {
+                                existingReaction.memberIds = Array.from(
+                                    new Set([...existingReaction.memberIds, reaction.memberId])
+                                );
+                            } else {
+                                acc.push({ ...reaction, memberIds: [reaction.memberId] })
+                            }
+                            return acc
+                        },
+                            [] as (Doc<"reactions"> & {
+                                count: number;
+                                memberIds: Id<'members'>[]
+                            })[]
+                        )
+
+                        const reationsWithoutMemberIdProperty = dedupedReactions.map(
+                            ({ memberId, ...rest }) => rest
+                        )
+
+                        return {
+                            ...message,
+                            image,
+                            member,
+                            user,
+                            reactions: reationsWithoutMemberIdProperty,
+                            threadCount: thread.count,
+                            threadImage: thread.image,
+                            threadTimeStamp: thread.timeStamp
+                        }
+                    })
                 )
+            ).filter(
+                (message): message is NonNullable<typeof message> => message !== null
+            )
         }
 
     }
@@ -142,7 +190,6 @@ export const create = mutation({
             conversationId: _conversationId,
             workspaceId: args.workspaceId,
             parentMessageId: args.parentMessageId,
-            updateAt: Date.now()
         })
 
         return messageId
