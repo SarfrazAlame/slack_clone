@@ -1,6 +1,6 @@
 import { GetMessagesReturnType } from "@/features/messages/api/use-get-messages";
 import { format, isToday, isYesterday } from "date-fns";
-import {Message} from "./Message";
+import { Message } from "./Message";
 
 interface MessageListProps {
   memberName?: string;
@@ -72,7 +72,7 @@ export const MessageList = ({
                 createdAt={message._creationTime}
                 isEditing={false}
                 setEditingId={() => {}}
-                inCompact={false}
+                isCompact={false}
                 threadCount={message.threadCount}
                 threadImage={message.threadImage}
                 threadTimestamp={message.threadTimeStamp}
