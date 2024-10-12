@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Hint from "./Hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Thumbnail } from "./Thumbnail";
+import { Toolbar } from "./Toolbar";
 
 const Renderer = dynamic(() => import("@/components/Renderer"), { ssr: false });
 
@@ -83,9 +84,7 @@ export const Message = ({
         <button>
           <Avatar>
             <AvatarImage src={authorImage} />
-            <AvatarFallback>
-              {avatarFallbackImage}
-            </AvatarFallback>
+            <AvatarFallback>{avatarFallbackImage}</AvatarFallback>
           </Avatar>
         </button>
       </div>
@@ -108,6 +107,17 @@ export const Message = ({
           <span className="text-xs text-muted-foreground">(edited)</span>
         ) : null}
       </div>
+      {!isEditing && (
+        <Toolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          handleEdit={() => setEditingId(id)}
+          handleThread={() => {}}
+          handleDelete={() => {}}
+          handleReaction={() => {}}
+          handleThreadButton={hideThreadButton}
+        />
+      )}
     </div>
   );
 };
