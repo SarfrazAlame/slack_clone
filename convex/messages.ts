@@ -51,6 +51,38 @@ const getMember = async (ctx: QueryCtx, workspaceId: Id<'workspaces'>, userId: I
     return ctx.db.query("members").withIndex("by_worksapce_id_user_id", (q) => q.eq('workspaceId', workspaceId).eq('userId', userId)).unique()
 }
 
+export const update = mutation({
+    args: {
+        id: v.id("messages"),
+        body: v.string(),
+    },
+    handler: async (ctx, agrs) => {
+        const userId = await auth.getUserId(ctx)
+
+        if (!userId) {
+            throw new Error("Unauthorized")
+        }
+
+        const message = await ctx.db.get(agrs.id)
+
+        if (!message) {
+            throw new Error("Message not found")
+        }
+
+        const member = await getMember(ctx, message.workspaceId, userId)
+
+        if (!member || message.membserId !== member._id) {
+            throw new Error("Unauthorized")
+        }
+
+        await ctx.db.patch(agrs.id, {
+            body: agrs.body,
+            updateAt: new Date().getTime()
+        })
+
+        return agrs.id
+    }
+})
 
 export const get = query({
     args: {

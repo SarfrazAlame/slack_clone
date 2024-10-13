@@ -6,6 +6,7 @@ import Hint from "./Hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Thumbnail } from "./Thumbnail";
 import { Toolbar } from "./Toolbar";
+import { useUpdateMessage } from "@/features/messages/api/use-update-message";
 
 const Renderer = dynamic(() => import("@/components/Renderer"), { ssr: false });
 
@@ -57,7 +58,10 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
+  const { mutate: updateMessage } = useUpdateMessage();
+
   const avatarFallbackImage = authorName.charAt(0).toUpperCase();
+
   if (isCompact) {
     return (
       <div className="flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative">
@@ -75,6 +79,17 @@ export const Message = ({
             ) : null}
           </div>
         </div>
+        {!isEditing && (
+          <Toolbar
+            isAuthor={isAuthor}
+            isPending={false}
+            handleEdit={() => setEditingId(id)}
+            handleThread={() => {}}
+            handleDelete={() => {}}
+            handleReaction={() => {}}
+            handleThreadButton={hideThreadButton}
+          />
+        )}
       </div>
     );
   }

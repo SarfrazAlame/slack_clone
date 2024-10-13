@@ -16,7 +16,7 @@ interface ToolbarProps {
   handleThread: () => void;
   handleDelete: () => void;
   handleReaction: (value: string) => void;
-  handleThreadButton: boolean;
+  handleThreadButton: boolean | undefined;
 }
 
 export const Toolbar = ({
