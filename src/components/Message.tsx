@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useRemoveMessage } from "@/features/messages/api/use-delete-message";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useToggleReaction } from "@/features/reactions/api/use-toggle-reactions";
 
 const Renderer = dynamic(() => import("@/components/Renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
@@ -73,6 +74,9 @@ export const Message = ({
 
   const { mutate: deleteMessage, isPending: isDeletingMessage } =
     useRemoveMessage();
+
+  const { mutate: toggleReaction, isPending: isToggleReaction } =
+    useToggleReaction();
 
   const isPending = IsUpdatingMessage;
 
