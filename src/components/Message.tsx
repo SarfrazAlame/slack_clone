@@ -7,6 +7,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Thumbnail } from "./Thumbnail";
 import { Toolbar } from "./Toolbar";
 import { useUpdateMessage } from "@/features/messages/api/use-update-message";
+import { toast } from "sonner";
+import { error } from "console";
+import { cn } from "@/lib/utils";
 
 const Renderer = dynamic(() => import("@/components/Renderer"), { ssr: false });
 
@@ -58,7 +61,28 @@ export const Message = ({
   threadImage,
   threadTimestamp,
 }: MessageProps) => {
-  const { mutate: updateMessage } = useUpdateMessage();
+  const { mutate: updateMessage, isPending: IsUpdatingMessage } =
+    useUpdateMessage();
+
+  const isPending = IsUpdatingMessage;
+
+  const handleUpdate = ({ body }: { body: string }) => {
+    updateMessage(
+      {
+        id,
+        body,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Message updated");
+          setEditingId(null);
+        },
+        onError: (error) => {
+          toast.error("Failed to update message");
+        },
+      }
+    );
+  };
 
   const avatarFallbackImage = authorName.charAt(0).toUpperCase();
 
@@ -94,7 +118,12 @@ export const Message = ({
     );
   }
   return (
-    <div className="flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative">
+    <div
+      className={cn(
+        "flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative",
+        isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]"
+      )}
+    >
       <div className="flex items-start gap-2">
         <button>
           <Avatar>
