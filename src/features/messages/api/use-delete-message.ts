@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
 
 type RequestType = {
-    body: string,
     id:Id<'messages'>
 };
 
@@ -16,7 +15,6 @@ type Options = {
     onSettled?: () => void;
     onthrowError?: boolean
 }
-
 
 
 export const useRemoveMessage = () => {
