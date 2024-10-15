@@ -13,6 +13,7 @@ import { useRemoveMessage } from "@/features/messages/api/use-delete-message";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reactions";
 import { on } from "events";
+import { Reactions } from "./Reactions";
 
 const Renderer = dynamic(() => import("@/components/Renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
@@ -169,7 +170,7 @@ export const Message = ({
                     (edited)
                   </span>
                 ) : null}
-                {JSON.stringify(reactions)}
+                <Reactions data={reactions} onChange={handleReaction} />
               </div>
             )}
           </div>
@@ -233,7 +234,7 @@ export const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
-              {JSON.stringify(reactions)}
+             <Reactions data={reactions} onChange={handleReaction} />
             </div>
           )}
         </div>
