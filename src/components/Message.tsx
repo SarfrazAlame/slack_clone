@@ -80,6 +80,17 @@ export const Message = ({
 
   const isPending = IsUpdatingMessage;
 
+  const handleReaction = (value: string) => {
+    toggleReaction(
+      { messageId: id, value },
+      {
+        onError: () => {
+          toast.error("Failed to toggle reaction");
+        },
+      }
+    );
+  };
+
   const handleDelete = async () => {
     const ok = await confirm();
 
@@ -157,6 +168,7 @@ export const Message = ({
                     (edited)
                   </span>
                 ) : null}
+                {JSON.stringify(reactions)}
               </div>
             )}
           </div>
@@ -167,7 +179,7 @@ export const Message = ({
               handleEdit={() => setEditingId(id)}
               handleThread={() => {}}
               handleDelete={handleDelete}
-              handleReaction={() => {}}
+              handleReaction={handleReaction}
               handleThreadButton={hideThreadButton}
             />
           )}
@@ -220,6 +232,7 @@ export const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
+              {JSON.stringify(reactions)}
             </div>
           )}
         </div>
@@ -231,7 +244,7 @@ export const Message = ({
             handleEdit={() => setEditingId(id)}
             handleThread={() => {}}
             handleDelete={handleDelete}
-            handleReaction={() => {}}
+            handleReaction={handleReaction}
             handleThreadButton={hideThreadButton}
           />
         )}

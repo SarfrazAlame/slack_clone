@@ -29,7 +29,7 @@ export const toggle = mutation({
         const member = await getMember(ctx, message.workspaceId, userId)
 
         if (!member) {
-            throw new Error("Member not found")
+            throw new Error("Unauthorized")
         }
 
         const existingMessageReactionFromUser = await ctx.db
@@ -58,3 +58,4 @@ export const toggle = mutation({
 
     },
 })
+

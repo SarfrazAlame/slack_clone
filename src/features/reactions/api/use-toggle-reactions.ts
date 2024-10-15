@@ -5,7 +5,7 @@ import { Id } from "../../../../convex/_generated/dataModel";
 
 type RequestType = {
     value: string,
-    messageId: Id<"messages"> 
+    messageId: Id<"messages">
 };
 
 type ResponceType = Id<"reactions"> | null;
@@ -14,13 +14,10 @@ type Options = {
     onSuccess?: (data: ResponceType) => void;
     onError?: (error: Error) => void;
     onSettled?: () => void;
-    onthrowError?: boolean
+    throwError?: boolean
 }
 
-
-
 export const useToggleReaction = () => {
-
     const [data, setData] = useState<ResponceType>(null)
     const [error, setError] = useState<Error | null>(null)
 
@@ -41,13 +38,13 @@ export const useToggleReaction = () => {
             setStatus('pending')
 
             const response = await mutation(values);
-            // @ts-ignore
             options?.onSuccess?.(response);
             return response
+
         } catch (error) {
             setStatus('error')
             options?.onError?.(error as Error);
-            if (options?.onthrowError) {
+            if (options?.throwError) {
                 throw error
             }
         } finally {
