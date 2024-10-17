@@ -138,7 +138,7 @@ export const get = query({
                 workspaces.push(workspace)
             }
         }
- 
+
         return workspaces
 
     }

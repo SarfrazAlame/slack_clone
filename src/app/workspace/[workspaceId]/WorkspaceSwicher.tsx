@@ -21,6 +21,7 @@ const WorkspaceSwicher = () => {
 
   const { data: workspaces, isLoading: workspacesIsLoading } =
     useGetWorkspaces();
+    
   const { data: workspace, isLoading: workspaceIsLoading } = useGetWorkspace({
     id: workspaceId,
   });

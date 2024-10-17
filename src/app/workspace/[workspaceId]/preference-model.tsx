@@ -75,7 +75,7 @@ export const PreferenceModel = ({
         onSuccess: () => {
           toast.success("Workspace updated");
           setEditOpen(false);
-        },
+        }, 
         onError: () => {
           toast.error("Failed to update workspace");
         },

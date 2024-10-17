@@ -234,7 +234,7 @@ export const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
-             <Reactions data={reactions} onChange={handleReaction} />
+              <Reactions data={reactions} onChange={handleReaction} />
             </div>
           )}
         </div>
