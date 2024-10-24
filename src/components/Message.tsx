@@ -21,7 +21,7 @@ const Editor = dynamic(() => import("@/components/Editor"), { ssr: false });
 
 interface MessageProps {
   id: Id<"messages">;
-  memberId: Id<"members">;
+  memberId: Id<"members"> | undefined;
   authorImage?: string;
   authorName?: string;
   isAuthor: boolean;
@@ -45,6 +45,9 @@ interface MessageProps {
 }
 
 const formatFullTime = (date: Date) => {
+  if (!date || isNaN(new Date(date).getTime())) {
+    return 'Invalid Date';
+  }
   return `${isToday(date) ? "Today, " : isYesterday(date) ? "Yesterday" : format(date, "MMM d, yyyy")} at ${format(date, "h:mm a")}`;
 };
 
