@@ -10,8 +10,8 @@ import { Doc } from "../../../../convex/_generated/dataModel";
 import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import Hint from "@/components/Hint";
-import { PreferenceModel } from "./Preference-model";
 import { InviteModal } from "./InviteModal";
+import { PreferenceModel } from "./preference-model";
 
 interface WorkspaceHeaderProps {
   workspace: Doc<"workspaces">;

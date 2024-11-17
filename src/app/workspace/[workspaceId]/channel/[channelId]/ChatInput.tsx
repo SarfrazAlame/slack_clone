@@ -23,7 +23,7 @@ interface CreateMessageValues {
 
 const ChatInput = ({ placeholder }: ChatInputProps) => {
   const [editorKey, setEditorKey] = useState(0);
-  const [isPending, setIsPending] = useState(false);
+  const [_isPending, setIsPending] = useState(false);
 
   const editorRef = useRef<Quill | null>(null);
 

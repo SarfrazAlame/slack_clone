@@ -17,7 +17,6 @@ import { Delta, Op } from "quill/core";
 import { cn } from "@/lib/utils";
 import { EmojiPopOver } from "./emoji-popover";
 import Image from "next/image";
-import { on } from "events";
 
 interface EditorValue {
   image: File | null;

@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -44,7 +43,7 @@ export const PreferenceModel = ({
   const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } =
     useUpdateWorkspace();
 
-  const { mutate: removeWorkspace, isPending: isRemovingWorkspace } =
+  const { mutate: removeWorkspace, isPending: _isRemovingWorkspace } =
     useRemoveWorkspace();
 
   const handlerRemove = async () => {

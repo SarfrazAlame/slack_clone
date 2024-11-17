@@ -20,7 +20,7 @@ export default function Home() {
     } else if (!open) {
       setOpen(true);
     }
-  }, [wordspaceId, isLoading, open, setOpen]);
+  }, [wordspaceId, isLoading, open, setOpen, router]);
 
   return (
     <div className="h-full">

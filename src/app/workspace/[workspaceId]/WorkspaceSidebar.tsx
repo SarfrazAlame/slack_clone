@@ -31,11 +31,11 @@ const WorkspaceSidebar = () => {
     id: workspaceId,
   });
 
-  const { data: channels, isLoading: channelLoading } = useGetChannels({
+  const { data: channels, isLoading: _channelLoading } = useGetChannels({
     workspaceId,
   });
 
-  const { data: members, isLoading: memberLoading } = useGetMembers({
+  const { data: members, isLoading: _memberLoading } = useGetMembers({
     workspaceId,
   });
 

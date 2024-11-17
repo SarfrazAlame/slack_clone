@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { useRemoveMessage } from "@/features/messages/api/use-delete-message";
 import { useConfirm } from "@/hooks/use-confirm";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reactions";
-import { on } from "events";
 import { Reactions } from "./Reactions";
 import { usePanel } from "@/hooks/use-panel";
 
@@ -54,7 +53,7 @@ const formatFullTime = (date: Date) => {
 export const Message = ({
   id,
   isAuthor,
-  memberId,
+  // memberId,
   authorImage,
   authorName = "Member",
   reactions,
@@ -66,9 +65,9 @@ export const Message = ({
   isCompact,
   setEditingId,
   hideThreadButton,
-  threadCount,
-  threadImage,
-  threadTimestamp,
+  // threadCount,
+  // threadImage,
+  // threadTimestamp,
 }: MessageProps) => {
   const { parentMessageId, onOpenMessage, onClose } = usePanel();
 
@@ -80,10 +79,10 @@ export const Message = ({
   const { mutate: updateMessage, isPending: IsUpdatingMessage } =
     useUpdateMessage();
 
-  const { mutate: deleteMessage, isPending: isDeletingMessage } =
+  const { mutate: deleteMessage, isPending: _isDeletingMessage } =
     useRemoveMessage();
 
-  const { mutate: toggleReaction, isPending: isToggleReaction } =
+  const { mutate: toggleReaction, isPending: _isToggleReaction } =
     useToggleReaction();
 
   const isPending = IsUpdatingMessage;

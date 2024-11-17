@@ -30,8 +30,8 @@ const formDateLabel = (dateStr: string) => {
 };
 
 export const MessageList = ({
-  memberName,
-  memberImage,
+  // memberName,
+  // memberImage,
   channelName,
   channelCreationTime,
   variant,
@@ -87,7 +87,7 @@ export const MessageList = ({
                 authorName={message.user.name}
                 isAuthor={message.membserId === currentMember?._id}
                 authorImage={message.user.image}
-                // @ts-ignore
+                // @ts-expect-error
                 reactions={message.reactions}
                 body={message.body}
                 image={message.image}

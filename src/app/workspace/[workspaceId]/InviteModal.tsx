@@ -33,7 +33,7 @@ export const InviteModal = ({
     "This will deactivate the current invite code and generate a new one."
   );
 
-  const { mutate, isPending } = useNewJoinCode();
+  const { mutate } = useNewJoinCode();
 
   const handleNewCode = async () => {
     const confirmed = await confirm();
