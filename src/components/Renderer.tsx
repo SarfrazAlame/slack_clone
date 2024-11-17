@@ -20,7 +20,7 @@ const Renderer = ({ value }: RendererProps) => {
 
     quill.enable(false);
 
-    const contents = JSON.parse(value);
+    const contents = value ? JSON.parse(value ) :{}
     
     quill.setContents(contents);
 

@@ -20,13 +20,13 @@ export const Reactions = ({ data, onChange }: ReactionsProps) => {
 
   const currentMemberId = currentMember?._id;
 
-  if (data.length === 0 || !currentMemberId) {
+  if (data?.length === 0 || !currentMemberId) {
     return null;
   }
 
   return (
     <div className="flex items-center gap-1 mt-1 mb-1">
-      {data.map((reaction) => (
+      {data?.map((reaction) => (
         <Hint
           key={reaction._id}
           label={`${reaction.value} ${reaction.count === 1 ? "person" : "people"} reacted with ${reaction.value}`}

@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { AlertTriangle, Loader, XIcon } from "lucide-react";
 import { Message } from "@/components/Message";
-import { useGetMessage } from "../api/use-get-messages";
+import { useGetMessage } from "../api/use-get-message";
+import { useCurrentMember } from "@/features/members/api/use-current-members";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 
 interface ThreadProps {
   messageId: Id<"messages">;
@@ -10,9 +12,12 @@ interface ThreadProps {
 }
 
 export const Thread = ({ messageId, onClose }: ThreadProps) => {
+  const workspaceId = useWorkspaceId()
+  const { data: currentMember } = useCurrentMember({ workspaceId })
   const { data: message, isLoading: loadingMessage } = useGetMessage({
     id: messageId,
   });
+
 
   if (loadingMessage) {
     <div className="h-full flex flex-col">
@@ -28,7 +33,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
     </div>;
   }
 
-  if (!message || message === null) {
+  if (!message) {
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center p-4 border-b">
         <p className="text-lg font-bold">Thread</p>
@@ -57,13 +62,14 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           memberId={message?.membserId}
           authorName={message?.user.name}
           authorImage={message?.user.image}
-          isAuthor={false}
-          body={message?.body}
+          isAuthor={message?.membserId === currentMember?._id}
+          body={message?.body!}
           image={message?.image}
-          createdAt={message?._creationTime}
+          createdAt={message?._creationTime!}
           updatedAt={message?.updateAt}
+          // @ts-ignore
           reactions={message?.reactions}
-          id={message?._id}
+          id={message?._id!}
           isEditing={false}
           setEditingId={() => { }}
         />
