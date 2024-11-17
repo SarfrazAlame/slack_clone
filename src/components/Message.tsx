@@ -112,7 +112,7 @@ export const Message = ({
         onSuccess: () => {
           toast.success("Message deleted");
 
-          if (parentMessageId == id) {
+          if (parentMessageId === id) {
             close();
           }
         },

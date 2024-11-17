@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { AlertTriangle, Loader, XIcon } from "lucide-react";
-import { useGetMessageReply } from "../api/use-get-message";
 import { Message } from "@/components/Message";
+import { useGetMessage } from "../api/use-get-messages";
 
 interface ThreadProps {
   messageId: Id<"messages">;
@@ -10,7 +10,7 @@ interface ThreadProps {
 }
 
 export const Thread = ({ messageId, onClose }: ThreadProps) => {
-  const { data: message, isLoading: loadingMessage } = useGetMessageReply({
+  const { data: message, isLoading: loadingMessage } = useGetMessage({
     id: messageId,
   });
 
@@ -45,7 +45,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex justify-between items-center p-4 border-b">
+      <div className="h-[49px] flex justify-between items-center px-4 border-b">
         <p className="text-lg font-bold">Thread</p>
         <Button onClick={onClose} size={"iconSm"} variant={"ghost"}>
           <XIcon className="size-5 stroke-[1.5]" />
@@ -65,7 +65,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           reactions={message?.reactions}
           id={message?._id}
           isEditing={false}
-          setEditingId={() => {}}
+          setEditingId={() => { }}
         />
       </div>
     </div>
