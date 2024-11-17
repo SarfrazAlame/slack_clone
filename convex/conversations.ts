@@ -18,8 +18,35 @@ export const createOrGet = mutation({
 
         const otherMember = await ctx.db.get(args.memberId)
 
-        if(!currentMember || !otherMember){
+        if (!currentMember || !otherMember) {
             throw new Error("Member not found")
         }
+
+        const existingConversation = await ctx.db.query("conversations").filter((q) => q.eq(q.field("workspaceId"), args.workspaceId)).filter((q) =>
+            q.or(
+                q.and(
+                    q.eq(q.field("membersOneId"), currentMember._id),
+                    q.eq(q.field("membersTwoId"), otherMember._id)
+                ),
+                q.and(
+                    q.eq(q.field("membersOneId"), otherMember._id),
+                    q.eq(q.field("membersTwoId"), currentMember._id),
+                )
+            )
+        )
+            .unique()
+
+        if (existingConversation) {
+            return existingConversation._id
+        }
+
+        const conversationId = await ctx.db.insert("conversations", {
+            workspaceId: args.workspaceId,
+            membersOneId: currentMember._id,
+            membersTwoId: otherMember._id
+        })
+
+       
+        return conversationId
     }
 })
