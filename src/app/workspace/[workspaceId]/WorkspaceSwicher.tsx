@@ -17,9 +17,9 @@ import React from "react";
 const WorkspaceSwicher = () => {
   const router = useRouter();
   const workspaceId = useWorkspaceId();
-  const [_open, setOpen] = useCreateWorkspaceModel();
+  const [, setOpen] = useCreateWorkspaceModel();
 
-  const { data: workspaces, isLoading: workspacesIsLoading } =
+  const { data: workspaces} =
     useGetWorkspaces();
     
   const { data: workspace, isLoading: workspaceIsLoading } = useGetWorkspace({

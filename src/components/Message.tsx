@@ -69,7 +69,7 @@ export const Message = ({
   // threadImage,
   // threadTimestamp,
 }: MessageProps) => {
-  const { parentMessageId, onOpenMessage, onClose } = usePanel();
+  const { parentMessageId, onOpenMessage } = usePanel();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Delete message",
@@ -79,10 +79,10 @@ export const Message = ({
   const { mutate: updateMessage, isPending: IsUpdatingMessage } =
     useUpdateMessage();
 
-  const { mutate: deleteMessage, isPending: _isDeletingMessage } =
+  const { mutate: deleteMessage, } =
     useRemoveMessage();
 
-  const { mutate: toggleReaction, isPending: _isToggleReaction } =
+  const { mutate: toggleReaction} =
     useToggleReaction();
 
   const isPending = IsUpdatingMessage;
@@ -133,8 +133,8 @@ export const Message = ({
           toast.success("Message updated");
           setEditingId(null);
         },
-        onError: (error) => {
-          toast.error("Failed to update message");
+        onError: () => {
+          toast.error("Failed to update message" );
         },
       }
     );

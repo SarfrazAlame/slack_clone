@@ -43,7 +43,7 @@ export const PreferenceModel = ({
   const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } =
     useUpdateWorkspace();
 
-  const { mutate: removeWorkspace, isPending: _isRemovingWorkspace } =
+  const { mutate: removeWorkspace, } =
     useRemoveWorkspace();
 
   const handlerRemove = async () => {

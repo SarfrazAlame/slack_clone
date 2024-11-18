@@ -23,7 +23,7 @@ interface CreateMessageValues {
 
 const ChatInput = ({ placeholder }: ChatInputProps) => {
   const [editorKey, setEditorKey] = useState(0);
-  const [_isPending, setIsPending] = useState(false);
+  const [, setIsPending] = useState(false)  
 
   const editorRef = useRef<Quill | null>(null);
 
@@ -78,7 +78,7 @@ const ChatInput = ({ placeholder }: ChatInputProps) => {
 
       setEditorKey((prevKey) => prevKey + 1);
     } catch (error) {
-      toast.error("Failed to send message");
+      toast.error("Failed to send message"+ error);
     } finally {
       setIsPending(false);
       editorRef.current?.enable(true);

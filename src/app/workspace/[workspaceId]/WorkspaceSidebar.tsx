@@ -22,7 +22,7 @@ const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
   const channelId = useChannelId();
 
-  const [_open, setOpen] = useCreateChannelModel();
+  const [, setOpen] = useCreateChannelModel();
 
   const { data: member, isLoading: memberIsLoading } = useCurrentMember({
     workspaceId,
@@ -31,11 +31,11 @@ const WorkspaceSidebar = () => {
     id: workspaceId,
   });
 
-  const { data: channels, isLoading: _channelLoading } = useGetChannels({
+  const { data: channels,  } = useGetChannels({
     workspaceId,
   });
 
-  const { data: members, isLoading: _memberLoading } = useGetMembers({
+  const { data: members, } = useGetMembers({
     workspaceId,
   });
 
