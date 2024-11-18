@@ -125,7 +125,7 @@ export const Header = ({ title }: HeaderProps) => {
                   </div>
                   <p className="text-sm"># {title}</p>
                 </div>
-              </DialogTrigger>
+              </DialogTrigger>  
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>rename this channel</DialogTitle>
